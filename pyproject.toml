@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "semantix"
+version = "0.1.0"
+description = "Semantic labeling and training pipeline with async ingestion"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "Semantix Contributors"}
+]
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "nicegui>=1.4.0",
+    "redis>=5.0.0",
+    "aioredis>=2.0.0",
+    "polars>=0.19.0",
+    "pyarrow>=14.0.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "orjson>=3.9.0",
+    "watchfiles>=0.21.0",
+    "sqlalchemy>=2.0.0",
+    "aiosqlite>=0.19.0",
+    "arq>=0.25.0",
+    "python-multipart>=0.0.6",
+    "aiofiles>=23.2.0",
+    "httpx>=0.25.0",
+    "python-magic>=0.4.27",
+    "pdfminer.six>=20221105",
+    "readability-lxml>=0.8.1",
+    "lxml>=5.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.11.0",
+    "ruff>=0.1.6",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["semantix*"]
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+

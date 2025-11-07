@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  api:
+    build: .
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      VOTE_THRESHOLD: "3"
+      QUALITY_MIN: "1"
+      INPUT_DIR: /data/input
+      ARTIFACTS_DIR: /app/artifacts
+      API_HOST: "0.0.0.0"
+      API_PORT: "8080"
+    volumes:
+      - ./data/input:/data/input
+      - ./artifacts:/app/artifacts
+    ports:
+      - "8080:8080"
+    command: python -m semantix.main
+    depends_on:
+      - redis
+
+  worker:
+    build: .
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      ARTIFACTS_DIR: /app/artifacts
+    volumes:
+      - ./artifacts:/app/artifacts
+    command: python -m semantix.train.workers
+    depends_on:
+      - api
+      - redis
+
+volumes:
+  redis_data:
+
